@@ -46,9 +46,12 @@ fun HomeScreen() {
         var jsonResponse by remember { mutableStateOf("") }
         var showLoading by remember { mutableStateOf(false) }
 
+        val apiTodo = TodoApi.todoApiService
+
         val toDo = ToDo(
+            owner = 1,
+            completed = true,
             title = "How to Make HTTP Requests With Retrofit in Android",
-            // todo - define other fields
         )
 
 
@@ -89,28 +92,30 @@ fun HomeScreen() {
                 scope.launch {
                     when (headLine) {
                         "/POST" -> {
-                            jsonResponse = "response POST"
+                            jsonResponse = apiTodo.createNewTodo(toDo).toString()
                         }
 
                         "/GET" -> {
-                            jsonResponse = "response GET"
+                            jsonResponse = apiTodo.getAllTodos().toString()
 
                         }
 
                         "/GET/1" -> {
-                            jsonResponse = "response GET/1"
+                            jsonResponse = apiTodo.getTodoById(1).toString()
 
                         }
 
                         "/PUT" -> {
                             // Use PUT request to Update data
-                            jsonResponse = "response PUT"
+                            jsonResponse = apiTodo.updateTodo(
+                                id = 1,
+                                todo = toDo
+                            ).toString()
 
                         }
 
                         "/DELETE" -> {
-                            jsonResponse = "response DELETE"
-
+                            jsonResponse = apiTodo.deleteTodo(2).toString()
                         }
                     }
                     showLoading = !showLoading

@@ -20,6 +20,8 @@ private val contentType = "application/json".toMediaType()
  * todo - Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
  */
 private val retrofit = Retrofit.Builder()
+    .addConverterFactory(Json.asConverterFactory(contentType))
+    .baseUrl(BASE_URL)
     .build()
 
 
@@ -27,7 +29,20 @@ private val retrofit = Retrofit.Builder()
  * todo - Retrofit service object for creating api calls
  */
 interface TodoApiService {
+    @GET("todos")
+    suspend fun getAllTodos(): List<ToDo>
 
+    @GET("todos/{id}")
+    suspend fun getTodoById(@Path("id") id: Int): List<ToDo>
+
+    @POST("todos")
+    suspend fun createNewTodo(@Body todo: ToDo): ToDo
+
+    @PUT("todos/{id}")
+    suspend fun updateTodo(@Path("id") id: Int, @Body todo: ToDo): ToDo
+
+    @DELETE("todos/{id}")
+    suspend fun deleteTodo(@Path("id") id: Int)
 }
 
 /**
@@ -35,4 +50,7 @@ interface TodoApiService {
  */
 object TodoApi {
     // todo
+    val todoApiService: TodoApiService by lazy {
+        retrofit.create(TodoApiService::class.java)
     }
+}
