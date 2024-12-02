@@ -4,12 +4,11 @@ import avd.fsa.retrofitdemoles11.model.ToDo
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.DELETE
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -33,7 +32,7 @@ interface TodoApiService {
     suspend fun getAllTodos(): List<ToDo>
 
     @GET("todos/{id}")
-    suspend fun getTodoById(@Path("id") id: Int): List<ToDo>
+    suspend fun getTodoById(@Path("id") id: Int): ToDo
 
     @POST("todos")
     suspend fun createNewTodo(@Body todo: ToDo): ToDo
